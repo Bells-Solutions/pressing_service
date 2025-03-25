@@ -15,7 +15,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: () => import('@/pages/HomePage.vue'),
+      component: () => import('@/pages/customer/HomePage.vue'),
       meta: {
         title: 'Home',
       },
@@ -23,7 +23,7 @@ const router = createRouter({
     {
       path: '/orders',
       name: 'orders',
-      component: () => import('@/pages/OrdersPage.vue'),
+      component: () => import('@/pages/customer/OrdersPage.vue'),
       meta: {
         title: 'Orders',
       },
@@ -31,7 +31,7 @@ const router = createRouter({
     {
       path: '/privacy-policy',
       name: 'privacy-policy',
-      component: () => import('@/pages/PrivacyPolicyPage.vue'),
+      component: () => import('@/pages/customer/PrivacypolicyPage.vue'),
       meta: {
         title: 'Privacy Policy',
       },
@@ -39,7 +39,7 @@ const router = createRouter({
     {
       path: '/terms-and-conditions',
       name: 'terms-and-conditions',
-      component: () => import('@/pages/PrivacyPolicyPage.vue'),
+      component: () => import('@/pages/customer/PrivacypolicyPage.vue'),
       meta: {
         title: 'Terms and Conditions',
       },
