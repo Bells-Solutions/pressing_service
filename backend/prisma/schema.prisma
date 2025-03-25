@@ -1,0 +1,70 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum USER_ROLE {
+  CUSTOMER
+  ADMIN
+  DELIVERY
+}
+
+enum ORDER_STATUS {
+  PENDING
+  RECEIVED
+  IN_PROGRESS
+  READY_FOR_DELIVERY
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+}
+
+model User {
+  id         String   @id @default(uuid())
+  auth0_id   String   @unique
+  name       String
+  email      String   @unique
+  role       USER_ROLE @default(CUSTOMER)
+  phone      String   @unique
+
+  customerOrders    Order[] @relation("CustomerOrders")
+  deliveryAssignments Order[] @relation("DeliveryAssignments")
+}
+
+model Order {
+  id               String       @id @default(uuid())
+  service          String
+  status           ORDER_STATUS @default(PENDING)
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  totalAmount      Float
+
+  userId           String
+  user             User         @relation("CustomerOrders", fields: [userId], references: [id], onDelete: Cascade)
+
+  deliveryPersonId String?
+  deliveryPerson   User?        @relation("DeliveryAssignments", fields: [deliveryPersonId], references: [id])
+
+  feedback         Feedback?
+}
+
+model Service {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  price       Float
+}
+
+model Feedback {
+  id        String   @id @default(uuid())
+  rating    Int      // From 1 to 5
+  comment   String?
+  createdAt DateTime @default(now())
+
+  orderId   String   @unique
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
